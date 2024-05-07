@@ -1,0 +1,9 @@
+1- Codificar a imagem :
+     └> String arquivoCodificado = BaseCodec.padrao64().codifica(arquivo).texto();
+                                                                  └> O arquivo pode ser vindo de parâmetro;
+2- Adicionar elemento "Image" no jasper
+     └> Custom Expression
+     └> 'new ByteArrayInputStream(Base64.decodeBase64($F{fieldImagem}.getBytes()))'
+
+3- Adicionar no 'Source' do jasper após a propriedade "<jasperReport xmlns>"
+     └> <import value="org.apache.commons.codec.binary.Base64"></import>
