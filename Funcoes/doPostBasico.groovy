@@ -1,5 +1,3 @@
-package Funcoes
-
 def Object doPost(String url, Object dadosInserir) {
     /*
     url: Deve ser inserida a URL para onde será realizado o post
