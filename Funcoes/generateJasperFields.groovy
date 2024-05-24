@@ -7,7 +7,11 @@ mapaEsquema = [
         'com.betha.bfc.script.api.dados.dinamico.esquema.ListaEsquema': 'java.util.List'
 ]
 
-def generateFieldXML(nome, tipo) {
+def generateFieldXML(String nome, String tipo) {
+    /*
+        nome: Nome do field a ser criado
+        tipo: Tipo da classe a ser criado
+    */
     return """
   <field name="${nome}" class="${tipo}">
       <fieldDescription><![CDATA[${nome}]]></fieldDescription>
@@ -16,6 +20,14 @@ def generateFieldXML(nome, tipo) {
 }
 
 def generateXML(esquema) {
+    /*
+        esquema: Mapa que dita nome e tipo do fields a ser criado
+        ex:
+        esquema = [
+            id: Esquema.numero,
+            descricao: Esquema.caracter
+        ]
+    */
     def xml = '<schema>\n'
     esquema.each { nome, tipo ->
         chave = "${tipo.toString().split('@')[0]}"
@@ -26,7 +38,10 @@ def generateXML(esquema) {
     return xml
 }
 
-//TODO adicionar o esquema aqui
+/*
+    TODO
+    Para funcionar, o esquema deve ser adicionado a baixo
+*/
 esquema = [
         teste: Esquema.caracter
 ]
@@ -36,3 +51,6 @@ arquivoTxt = Arquivo.novo('xmlFields.txt');
 arquivoTxt.escrever(xmlOutput);
 
 Resultado.arquivo(arquivoTxt);
+/*
+    Será gerando um arquivo txt, com o resultado em XRML, que ao ser colado no source do JasperSoft Tibco, gerará os fields.
+ */
