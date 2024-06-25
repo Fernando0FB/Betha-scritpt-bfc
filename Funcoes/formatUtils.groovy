@@ -1,13 +1,13 @@
 /*
 Recebe um número de telefone e formata com '()' e '-'
  */
-def String formatTelefone(String numero) {
-    //Numero: Celular em formato string com 11 ou 10 numeros ex "4899382716"
+def String formatTelefone(String numero){
+    //Numero: Celular em formato string com 11 ou 10 numeros
     if (numero.size() == 11) {
-        return numero.replaceAll(/(\d{2})(\d{5})(\d{4})/) { match ->
+        return numero.trim().replaceAll(/(\d{2})(\d{5})(\d{4})/) { match ->
             "(${match[1]}) ${match[2]}-${match[3]}"
         }
-    } else if (numero.size() == 10) {
+    } else if (numero.trim().size() == 10) {
         return numero.replaceAll(/(\d{2})(\d{4})(\d{4})/) { match ->
             "(${match[1]}) ${match[2]}-${match[3]}"
         }
@@ -25,7 +25,7 @@ Recebe um CNPJ e formata adicionando os '.', '/' e '-'
 */
 def String formatCNPJ(String cnpj) {
     //cnpj: cnpj em formato de string, deve conter 14 caracteres
-    return cnpj.take(14).replaceAll(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/) { match ->
+    return cnpj.trim().take(14).replaceAll(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/) { match ->
         "${match[1]}.${match[2]}.${match[3]}/${match[4]}-${match[5]}"
     }
 }
@@ -39,12 +39,35 @@ Recebe um CPF e formata adicionando os '.' e '-'
 */
 def String formatCPF(String cpf) {
     //cpf: cpf em formato de string, deve conter 11 caracteres
-    return cpf.take(11).replaceAll(/(\d{3})(\d{3})(\d{3})(\d{2})/) { match ->
+    return cpf.trim().take(11).replaceAll(/(\d{3})(\d{3})(\d{3})(\d{2})/) { match ->
         "${match[1]}.${match[2]}.${match[3]}-${match[4]}"
     }
 }
 formatCPF("123321123321");
 //└> retorno -> 123.321.123-31
+//--------------------------\\
+
+/*
+Recebe uma String numeral, e formata corretamente se for cpf ou cnpj
+ */
+def String formatCpfCnpj(String cpfCnpj) {
+    //cpfCnpj: String numeral, com tamanho 11 ou 14;
+    if(cpfCnpj.trim().size() == 11) {
+        return cpf.trim().take(11).replaceAll(/(\d{3})(\d{3})(\d{3})(\d{2})/) { match ->
+            "${match[1]}.${match[2]}.${match[3]}-${match[4]}"
+        }
+    } else if (cpfCnpj.trim().size() == 14) {
+        return cnpj.trim().take(14).replaceAll(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/) { match ->
+            "${match[1]}.${match[2]}.${match[3]}/${match[4]}-${match[5]}"
+        }
+    } else {
+        return cpfCnpj;
+    }
+}
+formatCpfCnpj("12345678910");
+//└> retorno -> 123.456.789-10
+formatCpfCnpj("12345678910123");
+//└> retorno -> 12.345.678/9101-23
 //--------------------------\\
 
 
@@ -53,7 +76,7 @@ Recebe um CEP e formata adicionando os '.' e '-'
 */
 def String formatCEP(String cep) {
     //cep: cep em formato de string, deve conter 8 caracteres
-    return cep.take(8).replaceAll(/(\d{5})(\d{3})/) { match ->
+    return cep.trim().take(8).replaceAll(/(\d{5})(\d{3})/) { match ->
         "${match[1]}-${match[2]}"
     }
 }
@@ -73,24 +96,24 @@ def String formatUtils(String tipo, String campo) {
     String campoFormatado = campo;
 
     if (tipo == "CNPJ") {
-        campoFormatado = campo.replaceAll(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/) { match ->
+        campoFormatado = campo.trim().replaceAll(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/) { match ->
             "${match[1]}.${match[2]}.${match[3]}/${match[4]}-${match[5]}"
         }
     } else if (tipo == "CPF") {
-        campoFormatado = campo.replaceAll(/(\d{3})(\d{3})(\d{3})(\d{2})/) { match ->
+        campoFormatado = campo.trim().replaceAll(/(\d{3})(\d{3})(\d{3})(\d{2})/) { match ->
             "${match[1]}.${match[2]}.${match[3]}-${match[4]}"
         }
     } else if (tipo == "CEP") {
-        campoFormatado = campo.replaceAll(/(\d{5})(\d{3})/) { match ->
+        campoFormatado = campo.trim().replaceAll(/(\d{5})(\d{3})/) { match ->
             "${match[1]}-${match[2]}"
         }
     } else if (tipo == "TELEFONE") {
-        if (campo.size() == 11) {
-            campoFormatado = campo.replaceAll(/(\d{2})(\d{5})(\d{4})/) { match ->
+        if (campo.trim().size() == 11) {
+            campoFormatado = campo.trim().replaceAll(/(\d{2})(\d{5})(\d{4})/) { match ->
                 "(${match[1]}) ${match[2]}-${match[3]}"
             }
-        } else if (campo.size() == 10) {
-            campoFormatado = campo.replaceAll(/(\d{2})(\d{4})(\d{4})/) { match ->
+        } else if (campo.trim().size() == 10) {
+            campoFormatado = campo.trim().replaceAll(/(\d{2})(\d{4})(\d{4})/) { match ->
                 "(${match[1]}) ${match[2]}-${match[3]}"
             }
         }
@@ -106,33 +129,6 @@ formatUtils("CEP","77741526");
 //└> retorno -> "77741-526"
 formatUtils("TELEFONE","48998567382");
 //└> retorno -> "(48) 99856-7382"
-//--------------------------\\
-
-
-/*
-Formata ISO 8601 duration para map com as informações
- */
-def Object mapISO8601duration(String duracao) {
-    //duracao: String de padrão ISO860 duration
-    //└> Mais informações de ISO 8601 duration : https://www.digi.com/resources/documentation/digidocs/90001488-13/reference/r_iso_8601_duration_format.htm
-    def pattern = ~/P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/;
-    def matcher = pattern.matcher(duracao);
-    def resultado = [:];
-
-    if (matcher.matches()) {
-        resultado.anos = (matcher[0][1] != null) ? matcher[0][1].toInteger() : 0;
-        resultado.meses = (matcher[0][2] != null) ? matcher[0][2].toInteger() : 0;
-        resultado.dias = (matcher[0][3] != null) ? matcher[0][3].toInteger() : 0;
-        resultado.horas = (matcher[0][4] != null) ? matcher[0][4].toInteger() : 0;
-        resultado.minutos = (matcher[0][5] != null) ? matcher[0][5].toInteger() : 0;
-        resultado.segundos = (matcher[0][6] != null) ? matcher[0][6].toInteger() : 0;
-    }
-
-    return resultado;
-}
-
-mapISO8601duration("P2YT4H10M");
-//└> retorno = "[anos:2, meses:0, dias:0, horas:4, minutos:10, segundos:0]"
 //--------------------------\\
 
 
@@ -156,6 +152,24 @@ def String formatValor(BigDecimal valorInicial) {
     def valorFormatado = "R\$${parteInteiraComPontos},${parteDecimal}"
     return valorFormatado
 }
-formatValor(120312.132);
+formatValor(120312.13);
 //└> retorno -> "R$120.312,13"
 //--------------------------\\
+
+
+/*
+Recebe uma data, valida, e retorna formatada no padrão dd/MM/yyyy
+ */
+def String validaFormataData(Date data) {
+    //data: Data no formato Date
+    //└> caso nulo, retorna em branco
+    if (data && (data?.format("dd/MM/yyyy") != "01/01/1800")) {
+        return data.format("dd/MM/yyyy");
+    } else {
+        return "";
+    }
+}
+validaFormataData(Datas.data(2024,10,15));
+//└> retorno -> "15/10/2024"
+validaFormataData(null);
+//└> retorno -> ""
