@@ -5,5 +5,5 @@
      └> Custom Expression
      └> 'new ByteArrayInputStream(Base64.decodeBase64($F{fieldImagem}.getBytes()))'
 
-3- Adicionar no 'Source' do jasper após a propriedade "<jasperReport xmlns>"
+3- Adicionar no 'Source' do jasper após a propriedade "<jasperReport xmlns> (Caso houver <property> adicionar após)"
      └> <import value="org.apache.commons.codec.binary.Base64"></import>
