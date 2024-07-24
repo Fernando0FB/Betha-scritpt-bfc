@@ -173,3 +173,20 @@ validaFormataData(Datas.data(2024,10,15));
 //└> retorno -> "15/10/2024"
 validaFormataData(null);
 //└> retorno -> ""
+
+
+/*
+Recebe uma String no formato dd/MM/yyyy e retorna um Date
+ */
+def Date stringParaData(String data) {
+    //data: String no formato 'dd/MM/yyyy'
+    //└> caso inválido, retorna null
+    try {
+        
+        return Date.parse("dd/MM/yy", data);
+    } catch (Exception e) {
+        return null;
+    }
+}
+stringParaData("09/07/2024");
+//└> retorno -> "Tue Jul 09 00:00:00 BRT 2024"

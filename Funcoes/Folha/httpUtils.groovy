@@ -12,7 +12,7 @@ def Object doPost(String url, Object dadosInserir, String v_bearerToken) {
     return respostaObj;
 }
 doPost("https://pessoal.betha.cloud/service-layer/v1/api/teste", [exemplo: "valor"], "3cxv123bvc13asd1")
-//└> Retorno: -> [Situacao: "Executado"] -> Será retornado a estrutura referente a URL enviado
+//└> Retorno: -> [id: "as2d1-sad12-2dasd"] -> Será retornado a estrutura referente a URL enviado
 
 
 def Object doPut(String url, Object dadosAtualizar, String v_bearerToken) {
@@ -29,14 +29,12 @@ def Object doPut(String url, Object dadosAtualizar, String v_bearerToken) {
     return respostaObj;
 }
 doPut("https://pessoal.betha.cloud/service-layer/v1/api/teste", [exemplo: "valor"], "3cxv123bvc13asd1")
-//└> Retorno: -> [Situacao: "Executado"] -> Será retornado a estrutura referente a URL enviado
+//└> Retorno: -> [id: "as2d1-sad12-2dasd"] -> Será retornado a estrutura referente a URL enviado
 
 
 /*
-Inicialmente desenvolvido para o folha.
-Caso utilizar para outras verticais, prestar atenção nas seguintes informações:
-    - URL utilizada no Http.servico deve mudar, dependendo como é utilizado na vertical;
-    - lote.situacao deve mudar, conforme estrutura da vertical;
+- URL utilizada no Http.servico deve mudar, dependendo como é utilizado na vertical;
+- lote.situacao deve mudar, conforme estrutura da vertical;
  */
 def Object confereLote(String idLote, String url, String v_bearerToken){
     /*
@@ -62,35 +60,5 @@ def Object confereLote(String idLote, String url, String v_bearerToken){
     }
     return lote;
 }
-
-
-/*
-Função responsável por realizar a validação do token informado.
- */
-
-def Map<Boolean, String> validaToken(String token) {
-    //token: Token de migração, ou de tela.
-    String url = ""; //Aqui deve ser inserido a url do tokenInfo
-                     // └> Por motivos de segurança, não foi informado
-    req = Http.servico(url + token).GET();
-
-    if(req.sucesso()) {
-        return [true:""];
-    } else if(req.json().expired){
-        return [false:"Token expirado!"];
-    } else {
-        return [false:"Token não encontrado!"];
-    }
-}
-validaToken("Imagine um Token válido");
-//└> retorno -> {true:""}
-validaToken("12312038");
-//└> retorno -> {false:Token não encontrado!}
-validaToken("Imagine um token expirado");
-//└> retorno -> {false:Token expirado!}
-
-//Exemplo utilização:
-validadeToken = validaToken("token")
-if(validadeToken.false) {
-    suspender("O token inserido é invalido! Motivo: ${validadeToken.false}")
-}
+confereLote("as2d1-sad12-2dasd", "https://pessoal.betha.cloud/service-layer/v1/api/teste", "3cxv123bvc13asd1");
+//└> Retorno: -> [situacao: "executado"] -> Será retornado a estrutura referente a URL enviada
