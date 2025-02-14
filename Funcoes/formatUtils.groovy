@@ -166,7 +166,7 @@ def String validaFormataData(Date data) {
     if (data && (data?.format("dd/MM/yyyy") != "01/01/1800")) {
         return data.format("dd/MM/yyyy");
     } else {
-        return "";
+        return null;
     }
 }
 validaFormataData(Datas.data(2024,10,15));

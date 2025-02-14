@@ -52,3 +52,30 @@ def Object mapISO8601duration(String duracao) {
 mapISO8601duration("P2YT4H10M");
 //└> retorno = "[anos:2, meses:0, dias:0, horas:4, minutos:10, segundos:0]"
 //--------------------------\\
+
+/*
+Remove caracteres especiais de uma string
+*/
+def String removerCaracteresEspeciais(String texto) {
+    String textoTratado = texto.expressao(~/[à|á|ã|â]/).substituirPor("a")
+            .expressao(~/[Á|Ã|À|Â]/).substituirPor("A")
+            .expressao(~/[é|ê]/).substituirPor("e")
+            .expressao(~/[É|É]/).substituirPor("E")
+            .expressao(~/[É|É]/).substituirPor("")
+            .expressao(~/[í]/).substituirPor("i")
+            .expressao(~/[Í]/).substituirPor("I")
+            .expressao(~/[õ|ó|ô]/).substituirPor("o")
+            .expressao(~/[Õ|Ó|Ô]/).substituirPor("O")
+            .expressao(~/[ü|ú]/).substituirPor("u")
+            .expressao(~/[Ú|Ü]/).substituirPor("U")
+            .expressao(~/[ç]/).substituirPor("c")
+            .expressao(~/[Ç]/).substituirPor("C")
+            .expressao(~/  /).substituirPor(" ")
+
+    return textoTratado
+    //.expressao(/[,|\/\|-|_||.|!|@|#|$|%|¨|&||^|´|.||:|;|)|(|%|~\-|]/).substituirPor("")
+}
+removerCaracteresEspeciais("caçar");
+//└> retorno = "cacar"
+removerCaracteresEspeciais("Rua Antônio Ávila");
+//└> retorno = "Rua Antonio Avila"
