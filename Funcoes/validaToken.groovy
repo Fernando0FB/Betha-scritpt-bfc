@@ -1,29 +1,10 @@
 /*
-Função responsável por realizar a validação do token informado.
+Função responsável por checar se a chave de integração está devidamente configurada.
  */
-def Map<Boolean, String> validaToken(String token) {
-    //token: Token de migração, ou de tela.
-    String url = ""; //Aqui deve ser inserido a url do tokenInfo
-    // └> Por motivos de segurança, não foi informado
-    req = Http.servico(url + token).GET();
-
-    if(req.sucesso()) {
-        return [true:""];
-    } else if(req.json().expired){
-        return [false:"Token expirado!"];
-    } else {
-        return [false:"Token não encontrado!"];
+def void validaChaveIntegracao() {
+    token = Variavel?.CHAVE_INTEGRACAO ?: null;
+    if (!token) {
+        suspender("A variável de ambiente 'CHAVE_INTEGRACAO' não está corretamente configurada, por favor, verifique!");
     }
 }
-validaToken("Imagine um Token válido");
-//└> retorno -> {true:""}
-validaToken("12312038");
-//└> retorno -> {false:Token não encontrado!}
-validaToken("Imagine um token expirado");
-//└> retorno -> {false:Token expirado!}
-
-//Exemplo utilização:
-validadeToken = validaToken("token")
-if(validadeToken.false) {
-    suspender("O token inserido é invalido! Motivo: ${validadeToken.false}")
-}
+validaChaveIntegracao();

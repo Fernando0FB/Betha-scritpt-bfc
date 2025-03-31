@@ -13,3 +13,31 @@ ehMaiorDeIdade(1234);
 //└>Retorno: -> true
 ehMaiorDeIdade(4321);
 //└>Retorno: -> false
+
+
+def Object getCorpoPutMatricula(Object matricula) {
+    /*
+        matricula: Objeto retornado da fonte dinâmica de matrículas
+     */
+    return [
+            idIntegracao: "${matricula.id}",
+            idGerado    : "${matricula.id}",
+            conteudo    : [
+                    id                    : matricula.id,
+                    dataInicioContrato    : matricula.dataInicioContrato.format("yyyy-MM-dd"),
+                    situacao              : matricula.situacao,
+                    geraRegistroPreliminar: matricula.geraRegistroPreliminar,
+                    tipo                  : matricula.tipo,
+                    pessoa                : [
+                            id: matricula.pessoa.id
+                    ],
+                    codigoMatricula       : [
+                            contrato         : matricula.codigoMatricula.contrato != 0 ? matricula.codigoMatricula.contrato : null,
+                            digitoVerificador: matricula.codigoMatricula.digitoVerificador,
+                            numero           : matricula.codigoMatricula.numero
+                    ]
+            ]
+    ]
+}
+getCorpoPutMatricula(itemMatriculas);
+//└> Retorno: -> {"idIntegracao":"","idGerado":"","conteudo":{"id":,"dataInicioContrato":"","situacao":"","geraRegistroPreliminar":,"tipo":"","pessoa":{"id":},"codigoMatricula":{"contrato":,"digitoVerificador":,"numero":}}}

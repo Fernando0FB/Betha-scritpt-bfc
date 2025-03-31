@@ -12,7 +12,7 @@ def generateFieldXML(String nome, String tipo) {
         nome: Nome do field a ser criado
         tipo: Tipo da classe a ser criado
     */
-    return """<field name="${nome}" class="${tipo}"/>"""
+    return """<field name="${nome}" class="${tipo}"/>\n"""
 }
 
 def generateXML(esquema) {
